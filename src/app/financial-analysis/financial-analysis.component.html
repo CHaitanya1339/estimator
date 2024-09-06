@@ -1,0 +1,59 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold text-gray-900 mb-6">Building Financial Analysis</h1>
+
+  <!-- Solar Panel Configuration -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Solar Panel Configuration</h2>
+    <label class="block mb-4">
+      <span class="text-gray-700">Number of Panels:</span>
+      <input type="number" [(ngModel)]="panelsCount" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-gray-700">Yearly Energy DC (kWh):</span>
+      <input type="number" [(ngModel)]="yearlyEnergyDcKwh" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+  </div>
+
+  <!-- Basic Settings -->
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Basic Settings</h2>
+    <label class="block mb-4">
+      <span class="text-gray-700">Monthly Average Energy Bill ($):</span>
+      <input type="number" [(ngModel)]="monthlyAverageEnergyBill" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-gray-700">Energy Cost per kWh ($):</span>
+      <input type="number" [(ngModel)]="energyCostPerKwh" step="0.01" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-gray-700">Panel Capacity (Watts):</span>
+      <input type="number" [(ngModel)]="panelCapacityWatts" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-gray-700">Solar Incentives ($):</span>
+      <input type="number" [(ngModel)]="solarIncentives" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-gray-700">Installation Cost per Watt ($):</span>
+      <input type="number" [(ngModel)]="installationCostPerWatt" step="0.1" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+    <label class="block mb-4">
+      <span class="text-gray-700">Installation Life Span (Years):</span>
+      <input type="number" [(ngModel)]="installationLifeSpan" (ngModelChange)="updateCalculations()" class="form-input mt-1 block w-full" />
+    </label>
+  </div>
+
+  <!-- Results -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Financial Analysis</h2>
+    <p><strong>Installation Size (kW):</strong> <span>{{ installationSizeKw | number: '1.2-2' }}</span></p>
+    <p><strong>Installation Cost Total ($):</strong> <span>{{ installationCostTotal | number: '1.2-2' }}</span></p>
+    <p><strong>Monthly Energy Consumption (kWh):</strong> <span>{{ monthlyKwhEnergyConsumption | number: '1.2-2' }}</span></p>
+    <p><strong>Yearly Energy Consumption (kWh):</strong> <span>{{ yearlyKwhEnergyConsumption | number: '1.2-2' }}</span></p>
+    <p><strong>Cost with Solar ($):</strong> <span>{{ totalCostWithSolar | number: '1.2-2' }}</span></p>
+    <p><strong>Cost without Solar ($):</strong> <span>{{ totalCostWithoutSolar | number: '1.2-2' }}</span></p>
+    <p><strong>Savings with Solar ($):</strong> <span>{{ savings | number: '1.2-2' }}</span></p>
+    <p><strong>Energy Covered (%):</strong> <span>{{ (energyCovered * 100) | number: '1.0-0' }}</span></p>
+    <p><strong>Break Even Year:</strong> <span>{{ breakEvenYearDisplay }}</span></p>
+  </div>
+</div>

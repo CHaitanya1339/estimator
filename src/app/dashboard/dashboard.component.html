@@ -1,0 +1,86 @@
+<div style="display: flex; height: 100vh;">
+    <!-- Sidebar with Search Box and Building Insights -->
+    <div style="width: 300px; padding: 20px; background-color: #f0f0f0;">
+      <h3>Search Location</h3>
+      <input
+        #searchInput
+        id="search-input"
+        type="text"
+        placeholder="Search for a place"
+        style="width: 100%; padding: 10px; margin-bottom: 10px;"
+      />
+      <div *ngIf="currentPlace">
+        <h4>{{ currentPlace.name }}</h4>
+        <p>{{ currentPlace.formatted_address }}</p>
+      </div>
+  
+      <!-- Solar Data Summary -->
+      <div *ngIf="buildingInsights">
+        <h4>Building Solar Summary</h4>
+        <div style="display: flex; flex-direction: column;">
+          <div *ngFor="let row of [
+            { icon: 'sun', name: 'Annual sunshine', value: showNumber(buildingInsights.solarPotential.maxSunshineHoursPerYear), units: 'hr' },
+            { icon: 'rulers', name: 'Roof area', value: showNumber(buildingInsights.solarPotential.wholeRoofStats.areaMeters2), units: 'm²' },
+            { icon: 'grid-3x3', name: 'Max panel count', value: showNumber(buildingInsights.solarPotential.solarPanels.length), units: 'panels' },
+            { icon: 'cloud', name: 'CO₂ savings', value: showNumber(buildingInsights.solarPotential.carbonOffsetFactorKgPerMwh), units: 'Kg/MWh' }
+          ]">
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+              <bi [name]="row.icon" style="width: 20px;"></bi> 
+              <div style="margin-left: 10px;">
+                <strong>{{ row.name }}:</strong> {{ row.value }} {{ row.units }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="buildingInsights">
+        <h4>Data Layer Insights</h4>
+        <div style="display: flex; flex-direction: column;">
+          <div *ngFor="let row of [
+            { name: 'Annual sunshine ', value: dataLayers.annualFluxUrl },
+            { name: 'Monthly sunshine ', value: dataLayers.monthlyFluxUrl },
+            { name: 'Hourly Shades', value: dataLayers.hourlyShadeUrls }
+          ]">
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+  
+              <div style="margin-left: 10px;">
+                <a href="{{ row.value }}" target="_blank">{{ row.name }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- Add an inline message for missing building insights -->
+  <div *ngIf="!buildingInsights && showNoLocationMessage" style="color: red;">
+    <p>Please select a location first to generate a personalized solar estimate report.</p>
+  </div>
+  
+  <!-- Update the click handler for the navigation -->
+  <button (click)="navigateToFinancialAnalysis()">
+    Report
+  </button>
+  
+  
+    </div>
+  
+    <!-- Map Container -->
+    <div style="position: relative; flex-grow: 1;">
+      <agm-map
+        [latitude]="lat"
+        [longitude]="lng"
+        [mapTypeId]="mapType"
+        [zoom]="zoom"
+        (mapClick)="onMapClick($event)"
+        style="width: 100%; height: 100%;"
+      >
+        <!-- Marker for selected location -->
+        <agm-marker
+          *ngIf="markerLat && markerLng"
+          [latitude]="markerLat"
+          [longitude]="markerLng"
+          [label]="markerLabel"
+        ></agm-marker>
+      </agm-map>
+    </div>
+  </div>
